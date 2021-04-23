@@ -1,14 +1,12 @@
 class Api {
     constructor(baseUrl, token, groupId) {
         this._baseUrl = baseUrl
-        this._token = token
-        this._groupId = groupId
     }
 
     getInitialCards() {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/cards`,{
+        return fetch(`${this._baseUrl}/cards`,{
             headers: {
-                authorization: this._token
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
             return this._getResponseData(res);
@@ -16,9 +14,9 @@ class Api {
     }
 
     getUserInfo() {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/users/me`,{
+        return fetch(`${this._baseUrl}/users/me`,{
             headers: {
-                authorization: this._token
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
             return this._getResponseData(res);
@@ -26,10 +24,10 @@ class Api {
     }
 
     editUserInfo(name, about) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/users/me`,{
+        return fetch(`${this._baseUrl}/users/me`,{
             method: 'PATCH',
             headers: {
-                authorization: this._token,
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -43,10 +41,10 @@ class Api {
     }
 
     addCard(name, link) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/cards`,{
+        return fetch(`${this._baseUrl}/cards`,{
             method: 'POST',
             headers: {
-                authorization: this._token,
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -60,10 +58,10 @@ class Api {
     }
 
     deleteCard(cardId) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/cards/${cardId}`,{
+        return fetch(`${this._baseUrl}/cards/${cardId}`,{
             method: 'DELETE',
             headers: {
-                authorization: this._token
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
             if (res.ok) {
@@ -74,10 +72,10 @@ class Api {
     }
 
     likeCard(cardId) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/cards/likes/${cardId}`,{
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`,{
             method: 'PUT',
             headers: {
-                authorization: this._token
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
             return this._getResponseData(res);
@@ -85,10 +83,10 @@ class Api {
     }
 
     dislikeCard(cardId) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/cards/likes/${cardId}`,{
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`,{
             method: 'DELETE',
             headers: {
-                authorization: this._token
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
             return this._getResponseData(res);
@@ -96,10 +94,10 @@ class Api {
     }
 
     updateAvatar(avatar) {
-        return fetch(`${this._baseUrl}/v1/${this._groupId}/users/me/avatar`,{
+        return fetch(`${this._baseUrl}/users/me/avatar`,{
             method: 'PATCH',
             headers: {
-                authorization: this._token,
+                uthorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -119,8 +117,6 @@ class Api {
 }
 
 export default new Api (
-     "https://mesto.nomoreparties.co",
-     "70633b92-f713-4bf2-95db-64e42dedc0a6",
-     "cohort-19"
+     "http://api.lucia-mesto.nomoredomains.club",
 
 )
