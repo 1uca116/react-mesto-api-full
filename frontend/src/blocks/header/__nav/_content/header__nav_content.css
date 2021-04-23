@@ -1,0 +1,7 @@
+.header__nav_content {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    order: 1;
+}

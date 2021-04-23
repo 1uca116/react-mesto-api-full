@@ -1,0 +1,12 @@
+@media screen and (max-width: 767px) {
+    .header__button-nav_close {
+        background-image: url('../../../../images/icons/nav-close.svg');
+        background-repeat: no-repeat;
+        margin-top: 27px;
+        order: 2;
+    }
+
+    .header__button-nav_close span {
+        display: none;
+    }
+}

@@ -1,0 +1,11 @@
+.popup__tool-logo {
+    display: flex;
+    margin: 0 auto 32px;
+}
+
+@media screen and (max-width: 767px) {
+    .popup__tool-logo {
+        margin-bottom: 40px;
+    }
+}
+

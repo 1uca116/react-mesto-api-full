@@ -1,0 +1,20 @@
+.header__sign {
+
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 22px;
+    color: white;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.header__sign:hover {
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 767px) {
+    .header__sign {
+        font-size: 14px;
+        line-height: 17px;
+        padding-right: 30px;
+    }
+}

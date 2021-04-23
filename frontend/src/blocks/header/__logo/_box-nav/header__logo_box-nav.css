@@ -1,0 +1,7 @@
+@media screen and (max-width: 767px) {
+    .header__logo_box-nav {
+        order: 2;
+        padding-left: 30px;
+        margin-top: 27px;
+    }
+}
