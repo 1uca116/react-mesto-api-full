@@ -52,7 +52,6 @@ app.post('/signin', celebrate({
 app.use('/users', auth, usersRouter )
 app.use('/cards', auth, cardsRouter)
 
-app.use(errors());
 
 app.all('*', (req, res) => {
   throw new NotFoundError('Запрашиваемая страница не найдена');
