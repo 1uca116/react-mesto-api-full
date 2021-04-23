@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const usersRouter = require('./routes/users.js');
 const cardsRouter = require('./routes/cards');
 const NotFoundError = require('./errors/not-found-error');
+require('dotenv').config();
 
 const { celebrate, Joi } = require('celebrate');
 
@@ -24,6 +25,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -45,6 +52,8 @@ app.post('/signin', celebrate({
 app.use('/users', auth, usersRouter )
 app.use('/cards', auth, cardsRouter)
 
+app.use(errors());
+
 app.all('*', (req, res) => {
   throw new NotFoundError('Запрашиваемая страница не найдена');
 });
@@ -63,6 +72,8 @@ console.log(message)
         : message
     });
 });
+
+console.log(process.env.NODE_ENV); //
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)

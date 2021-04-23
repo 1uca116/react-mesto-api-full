@@ -5,7 +5,7 @@ const ConflictError = require('../errors/conflict-error');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
 
-const JWT_SECRET = 'qwerty1234';
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -118,7 +118,14 @@ module.exports.login = (req, res) => {
   const {email, password} = req.body;
   return User.findUserByCredentials(email, password)
     .then((matched) => {
-      const token = jwt.sign({_id: matched._id}, JWT_SECRET, {expiresIn: '7d'});
+
+      const token = jwt.sign(
+        { _id: matched._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'qwerty1234',
+        {expiresIn: '7d'}
+      );
+
+
       if (!matched) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
