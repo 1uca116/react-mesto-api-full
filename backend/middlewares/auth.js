@@ -15,6 +15,8 @@ module.exports = (req, res, next) => {
 
   const secret = NODE_ENV === 'production' ? JWT_SECRET : 'qwerty1234';
 
+  console.log(NODE_ENV, JWT_SECRET, secret);
+
   try {
     payload = jwt.verify(token, secret);
   } catch (err) {

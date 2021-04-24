@@ -7,6 +7,7 @@ const cardsRouter = require('./routes/cards');
 const NotFoundError = require('./errors/not-found-error');
 require('dotenv').config();
 const cors = require('cors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { celebrate, Joi } = require('celebrate');
 
@@ -20,6 +21,8 @@ const app = express();
 
 app.use(cors());
 app.options('*', cors());
+
+app.use(requestLogger);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
