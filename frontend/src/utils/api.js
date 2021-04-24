@@ -110,8 +110,7 @@ class Api {
 
     _getResponseData(res) {
         if (res.ok) {
-            console.log(res.json())
-            return res.json().data;
+            return res.json().then(x => new Promise(x.data));
         }
         return Promise.reject(new Error(`Ошибка: ${res.status}`));
     }
