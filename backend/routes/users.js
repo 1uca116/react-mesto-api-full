@@ -6,7 +6,7 @@ const { getUsers, getUser, updateUser, updateAvatar} = require('../controllers/u
 router.get('/', getUsers)
 
 router.get('/me', (req, res) => {
-  res.send();
+  res.send({});
 })
 
 router.get('/:id', celebrate({
