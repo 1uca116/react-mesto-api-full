@@ -204,6 +204,7 @@ function App() {
 
     React.useEffect(() => {
         Api.getInitialCards().then(c => {
+            console.log('cards', c)
             setCards(c)
         }).catch(e => console.log(e));
 
