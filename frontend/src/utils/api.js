@@ -72,7 +72,7 @@ class Api {
     }
 
     likeCard(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`,{
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`,{
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -83,7 +83,7 @@ class Api {
     }
 
     dislikeCard(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`,{
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`,{
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -97,7 +97,7 @@ class Api {
         return fetch(`${this._baseUrl}/users/me/avatar`,{
             method: 'PATCH',
             headers: {
-                uthorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -110,13 +110,13 @@ class Api {
 
     _getResponseData(res) {
         if (res.ok) {
-            return res.json().then(x => new Promise(x.data));
+            return res.json();
         }
         return Promise.reject(new Error(`Ошибка: ${res.status}`));
     }
 }
 
 export default new Api (
-     "http://api.lucia-mesto.nomoredomains.club",
+     "https://api.lucia-mesto.nomoredomains.club"
 
 )

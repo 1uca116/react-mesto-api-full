@@ -4,7 +4,6 @@ import '../index.css';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
@@ -32,7 +31,8 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({
         name: '',
         about: '',
-        avatar: ''
+        avatar: '',
+        _id: ''
     });
     const history = useHistory();
     const [cards, setCards]=React.useState([]);
@@ -83,7 +83,12 @@ function App() {
     function handleUpdateUser(name, about) {
         Api.editUserInfo(name, about)
             .then(data => {
-                setCurrentUser( {...data});
+                setCurrentUser({
+                    _id: data.data._id,
+                    name: data.data.name,
+                    avatar: data.data.avatar,
+                    about: data.data.about
+                });
                 closeAllPopups();
             })
             .catch(e => console.log(e));
@@ -92,25 +97,30 @@ function App() {
     function handleUpdateAvatar(avatar) {
         Api.updateAvatar(avatar)
             .then(data => {
-                setCurrentUser({...data});
+                setCurrentUser({
+                    _id: data.data._id,
+                    name: data.data.name,
+                    avatar: data.data.avatar,
+                    about: data.data.about
+                });
                 closeAllPopups();
             })
             .catch (e => console.log(e));
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
         if (isLiked) {
             Api.dislikeCard(card._id)
                 .then((newCard) => {
-                    const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+                    const newCards = cards.map((c) => c._id === card._id ? newCard.data : c);
                     setCards(newCards)
-                        .catch(err => console.log(err));
-                });
+
+                }).catch(err => console.log(err));
         } else {
             Api.likeCard(card._id)
                 .then((newCard) => {
-                    const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+                    const newCards = cards.map((c) => c._id === card._id ? newCard.data : c);
                     setCards(newCards)
                 }).catch(err => console.log(err));
 
@@ -128,7 +138,7 @@ function App() {
     function handleAddPlace(name, link) {
         Api.addCard(name, link)
             .then((newCard) => {
-                setCards([newCard, ...cards]);
+                setCards([newCard.data, ...cards]);
                 closeAllPopups();
             }).catch(err => console.log(err));
     }
@@ -153,9 +163,15 @@ function App() {
         auth.authorize(email, password)
             .then(token => {
                 auth.checkToken(token)
-                    .then(_ => {
+                    .then(res => {
                         setLoggedIn(true);
-                        setEmail(email)
+                        setCurrentUser({
+                            _id: res.data._id,
+                            name: res.data.name,
+                            avatar: res.data.avatar,
+                            about: res.data.about
+                        });
+                        setEmail(res.data.email)
                         history.push("/");
                     })
                     .catch((error) => {
@@ -178,6 +194,12 @@ function App() {
                 .then((res) => {
                     if (res) {
                         setEmail(res.data.email);
+                        setCurrentUser({
+                            _id: res.data._id,
+                            name: res.data.name,
+                            avatar: res.data.avatar,
+                            about: res.data.about
+                        });
                         setLoggedIn(true);
                         history.push("/");
                     } else {
@@ -203,21 +225,27 @@ function App() {
     }, []);
 
     React.useEffect(() => {
+        Api.getUserInfo()
+            .then(data => {
+                setCurrentUser({
+                    _id: data.data._id,
+                    name: data.data.name,
+                    avatar: data.data.avatar,
+                    about: data.data.about
+                });
+            })
+            .catch(e => console.log(e));
+    }, []);
+
+    React.useEffect(() => {
         Api.getInitialCards().then(c => {
-            console.log('cards', c)
-            setCards(c)
+            setCards(c.data)
         }).catch(e => console.log(e));
 
     }, [])
 
 
-    React.useEffect(() => {
-        Api.getUserInfo()
-            .then(data => {
-                setCurrentUser({ ...data });
-            })
-            .catch(e => console.log(e));
-    }, []);
+
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
