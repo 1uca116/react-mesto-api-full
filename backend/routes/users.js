@@ -4,7 +4,12 @@ const { celebrate, Joi } = require('celebrate');
 const { getUsers, getUser, updateUser, updateAvatar} = require('../controllers/users');
 
 router.get('/', getUsers)
-router.get('/:userId', celebrate({
+
+router.get('/me', (req, res) => {
+  res.send();
+})
+
+router.get('/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().hex().length(24),
   }),

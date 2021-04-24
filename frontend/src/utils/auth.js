@@ -14,7 +14,7 @@ export const register = (email, password) => {
     })
         .then((response) => {
             if (response.ok) {
-                return response.json();
+                return response.json().data;
             }
 
             return Promise.reject(`Ошибка ${response.status}`)

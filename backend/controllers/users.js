@@ -119,8 +119,6 @@ module.exports.login = (req, res) => {
   return User.findUserByCredentials(email, password)
     .then((matched) => {
 
-
-      console.log(NODE_ENV, JWT_SECRET);
       const token = jwt.sign(
         { _id: matched._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'qwerty1234',
