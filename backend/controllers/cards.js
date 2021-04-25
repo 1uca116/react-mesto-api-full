@@ -4,7 +4,7 @@ const BadRequestError = require('../errors/bad-request-error');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then(cards => res.send({ data: cards }))
+    .then(cards => res.send({ data: cards.reverse() }))
     .catch(next);
 };
 
